@@ -69,7 +69,8 @@ class Cliente:
         return self.nombre
 
     def enviar_datos_conexion(self):
-        info_conexion = f"1000#{self.nombre}#{self.socketServicio.getsockname()[0]}#{self.socketServicio.getsockname()[1]}#"
+        #Te falto un salto de linea para que detecte que es el fin del mensaje por eso no se enviaba
+        info_conexion = f"1000#{self.nombre}#{self.socketServicio.getsockname()[0]}#{self.socketServicio.getsockname()[1]}#\n"
         self.enviar(info_conexion)
 
     def enviar(self, mensaje):
@@ -125,14 +126,14 @@ class Cliente:
         if mensaje:
             try:
                 # Enviar el mensaje al servidor con el formato correcto
-                self.socketServicio.sendall(f"1001#{self.nombre}: {mensaje}#".encode())
+                self.socketServicio.sendall(f"1001#{self.nombre}: {mensaje}#\n".encode())
                 self.tfMensaje.delete(0, END)
             except Exception as e:
                 self.agregar_log(f"Error al enviar mensaje: {e}")
 
     def logout(self):
         if self.online:
-            self.enviar(f"2001#{self.nombre}#")
+            self.enviar(f"2001#{self.nombre}#\n")
             self.online = False
         self.root.destroy()
 
